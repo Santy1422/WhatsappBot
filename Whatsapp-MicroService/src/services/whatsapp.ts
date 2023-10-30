@@ -3,6 +3,7 @@ import * as qrcode from 'qrcode-terminal';
 import { MyStore,users,webs } from '../databases/mongodb/index'
 import socket from "socket.io-client";
 import axios from "axios"
+import { OPENAI_API_KEY } from '../config/env';
 type ClientsRecord = Record<string,Client>;
 type QRHolder = Record<string,string>;
 type CanBeUsed = Record<string,boolean>;
@@ -135,9 +136,20 @@ class WspClientsHandler {
 				if (checkTarget('genero', lowerCaseMessage)) {
 				  message.reply(`¡Gracias! ✍️ Ahora, ¿sabes cuál es tu peso?`);
 				}
-			  
-				if (lowerCaseMessage.includes('peso')) {
-				  message.reply(`¡No está tan mal! ✍️ ¿Eres alérgico a alguna comida o tienes algún plato preferido?`);
+				let messageNumber = parseInt(lowerCaseMessage, 10);
+
+				if (
+					lowerCaseMessage.includes('peso') || 
+					lowerCaseMessage.includes('kg') || 
+					lowerCaseMessage.includes('kilo') || 
+					lowerCaseMessage.includes('kilogramo') || 
+					lowerCaseMessage.includes('kilogramos') || 
+					lowerCaseMessage.includes('kgs') || 
+					lowerCaseMessage.includes('libra') || 
+					lowerCaseMessage.includes('libras') || 
+					(messageNumber >= 40 && messageNumber <= 260)
+				  ){
+									  message.reply(`¡No está tan mal! ✍️ ¿Eres alérgico a alguna comida o tienes algún plato preferido?`);
 				}
 			  
 				if (checkTarget('alergia', lowerCaseMessage) || checkTarget('comida', lowerCaseMessage)) {
@@ -164,7 +176,7 @@ class WspClientsHandler {
 					  {
 						headers: {
 						  'Content-Type': 'application/json',
-						  Authorization: ``,
+						  Authorization: OPENAI_API_KEY,
 						},
 					  }
 					);
