@@ -11,7 +11,8 @@ if (!MONGO_URI) { console.error('[ERROR] Missing .env: MONGO_URI'); process.exit
 
 export const PORT = process.env.PORT || '8081'
 export const NODE_ENV = process.env.NODE_ENV
-
+export const JWT_RANDOM_PASSWORD = process.env.JWT_RANDOM_PASSWORD
+if (!JWT_RANDOM_PASSWORD) { console.error('[ERROR] Missing .env: JWT_RANDOM_PASSWORD'); process.exit(1); }
 
 console.log("URL MONGO DB: ", MONGO_URI);
 
