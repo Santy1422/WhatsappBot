@@ -8,7 +8,7 @@ const initWhatsapp = async ({ webId, setUser, setLoading, setError }) => {
   setLoading(true);
   try {
     const response = await axios.get(
-      `https://whatsapp-back-production.up.railway.app/v1/whatsapp/init`,
+      `https://horse-riders-house-production.up.railway.app/v1/whatsapp/init`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -29,7 +29,7 @@ const getQr = async ({ webId, setUser, setLoading, setError }) => {
   setLoading(true);
   try {
     const response = await axios.get(
-      `https://whatsapp-back-production.up.railway.app/v1/whatsapp/getqr`,
+      `https://horse-riders-house-production.up.railway.app/v1/whatsapp/getqr`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
