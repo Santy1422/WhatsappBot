@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "target": "ES2016",
+    "module": "CommonJS",
+    //"moduleResolution": "Node16",
+    "allowJs": true,
+    "outDir": "./build",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": false,
+    "skipLibCheck": false
+  },
+  "include": [
+    "./src/**/*.ts"
+, "src/databases/pinecone/generarRespuesta2.ts"  ]
+}
