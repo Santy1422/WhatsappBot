@@ -3,17 +3,10 @@ import QRCode from "react-qr-code";
 import axios from "axios";
 
 const initWhatsapp = async ({ webId, setUser, setLoading, setError }) => {
-  let token = localStorage.getItem("accessToken");
-  process.env.NODE_ENV == "development" && console.log(token);
   setLoading(true);
   try {
     const response = await axios.get(
       `https://horse-riders-house-production.up.railway.app/v1/whatsapp/init`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
     );
     setUser(response.data.payload);
   } catch (err) {
@@ -24,17 +17,10 @@ const initWhatsapp = async ({ webId, setUser, setLoading, setError }) => {
 };
 
 const getQr = async ({ webId, setUser, setLoading, setError }) => {
-  let token = localStorage.getItem("accessToken");
-  process.env.NODE_ENV == "development" && console.log(token);
   setLoading(true);
   try {
     const response = await axios.get(
       `https://horse-riders-house-production.up.railway.app/v1/whatsapp/getqr`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
     );
     setUser(response.data.payload.qr);
     console.log(response.data, "respuesta QR")
