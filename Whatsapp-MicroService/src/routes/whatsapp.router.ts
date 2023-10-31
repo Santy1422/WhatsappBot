@@ -5,8 +5,8 @@ import clientsHandler from '../services/whatsapp';
 import catchedAsync from '../utils/catchedAsync';
 
 const whatsappRoutes = express.Router()
-whatsappRoutes.route('/init').get( catchedAsync(controller.InitWhatsappClient))
-whatsappRoutes.route('/getqr').get( catchedAsync(controller.getQr))
+whatsappRoutes.route('/init/:id').get( catchedAsync(controller.InitWhatsappClient))
+whatsappRoutes.route('/getqr/:id').get( catchedAsync(controller.getQr))
 
 
 

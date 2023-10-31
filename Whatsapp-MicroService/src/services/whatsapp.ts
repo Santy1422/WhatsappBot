@@ -29,11 +29,14 @@ class WspClientsHandler {
 	}
 
 	async AddNewClient(webId: string) {
-		this._zAttachNewClient(webId);
-		this.AllClients[webId].initialize();
-		this._zAttachQREventHandler_Option_TWO(webId);
-		this._zAttachSharedEventListeners(webId);
-	  }
+		if (this.AllClients[webId]) throw new Error("Ya está logeado"); //verifica si ya no está logeado
+		this._zAttachNewClient(webId)
+		this.AllClients[webId].initialize()
+		this._zAttachQREventHandler_Option_TWO(webId)
+		this._zAttachSharedEventListeners(webId)
+		console.log(webId);
+
+	}
 
 	_zStartSavedSession(webId: string) {
 		this._zAttachNewClient(webId)
