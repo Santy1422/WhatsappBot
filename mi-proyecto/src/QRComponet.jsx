@@ -1,65 +1,236 @@
-import React from "react";
-import QRCode from "react-qr-code";
-
-export const QRComponet = ({ qr, WhatsAppRef, loading, handleQr }) => {
-  // Estilos en línea para el componente
-  const qrComponentStyles = {
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+const styles = {
+  container: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  qrComponent: {
     display: "flex",
     flexDirection: "column",
-    justifyContent: "center",
+    justifyContent: "left",
     alignItems: "center",
     borderRadius: "10px",
     backgroundColor: "#fff",
     boxShadow: "0px 0px 7px 0 rgba(0,0,0,0.1)",
     padding: "20px",
     border: "1px solid #007bff",
-    width: "300px", // Ancho de la tarjeta
-    margin: "0 auto", // Centrar horizontalmente
-  };
+    width: "300px",
+    margin: "0 auto",
+  },
+  qrCode: {
+    width: "200px",
+    height: "200px",
+  },
+  formContainer: {
+    flex: "1",
+    padding: "20px",
+    backgroundColor: "#f5f5f5",
+    border: "1px solid #ddd",
+  },
+  form: {
+    display: "flex",
+    flexDirection: "column",
+  },
+  formInput: {
+    marginBottom: "10px",
+    padding: "10px",
+    border: "1px solid #ccc",
+    borderRadius: "5px",
+  },
+  formButton: {
+    backgroundColor: "#007bff",
+    color: "#fff",
+    padding: "10px",
+    border: "none",
+    borderRadius: "5px",
+    cursor: "pointer",
+  },
+};
+
+export const QRComponet = ({ qr, WhatsAppRef, loading, handleQr }) => {
   return (
     <div
       ref={WhatsAppRef}
-      style={qrComponentStyles} // Aplicar estilos al contenedor principal
+      style={styles.qrComponent}
     >
-      <div className="flex flex-col items-end">
-        <div className="flex flex-col justify-center items-start gap-2 p-2">
-          <div className="flex flex-col gap-1">
- 
-          </div>
-
-          <div className="h-64 w-64 flex items-center justify-center">
-        
+      <div>
+        <div>
+          <p>QR Code:</p>
+          <div style={styles.qrCode}>
             {qr ? 
-              <QRCode value={qr} />
+              <img src={qr} alt="QR Code" />
             : (
               <p>Esperando QR...</p>
             )}
           </div>
         </div>
-      </div>
-      <div className="self-stretch h-[1px] bg-primary-300 dark:bg-primary-950"></div>
-      <div className="flex gap-2.5 p-2 justify-end items-end">
-        <button
-          onClick={handleQr}
-          className="flex flex-row items-center h-8 gap-2.5 px-3 py-2 rounded-md text-sm border border-primary-300 dark:border-primary-950 duration-300 hover:bg-primary-100 dark:hover:bg-primary-950"
-        >
-          <svg
-            viewBox="0 0 16 16"
-            fill="none"
-            className="w-4 h-4"
-            preserveAspectRatio="xMidYMid meet"
+        <div>
+          <button
+            onClick={handleQr}
+            style={styles.formButton}
           >
-            <path
-              fillRule="evenodd"
-              clipRule="evenodd"
-              d="M2 3.25C2 2.55964 2.55964 2 3.25 2H6.25C6.94036 2 7.5 2.55964 7.5 3.25V6.25C7.5 6.94036 6.94036 7.5 6.25 7.5H3.25C2.55964 7.5 2 6.94036 2 6.25V3.25ZM3.25 3C3.11193 3 3 3.11193 3 3.25V6.25C3 6.38807 3.11193 6.5 3.25 6.5H6.25C3.5 6.5 6.5 3.5H3.25ZM10.5 6.25C10.5 6.94036 11.0596 7.5 11.75 7.5H14.75C15.4404 7.5 16 6.94036 16 6.25V3.25C16 2.55964 15.4404 2 14.75 2H11.75C11.0596 2 10.5 2.55964 10.5 3.25V6.25ZM11.75 3C11.6119 3 11.5 3.11193 11.5 3.25V6.25C11.5 6.38807 11.6119 6.5 11.75 6.5H14.75C14.8881 6.5 15 6.3881 15 6.25V3.25C15 3.11193 14.8881 3 14.75 3H11.75ZM10 9.25C10 9.11193 10.1119 9 10.25 9H13.25C13.3881 9 13.5 9.11193 13.5 9.25V12.25C13.5 12.9404 12.9404 13.5 12.25 13.5H10.25C9.55964 13.5 9 12.9404 9 12.25V9.25ZM10.25 9.5C10.1119 9.5 10 9.61193 10 9.75V12.25C10 12.3881 10.1119 12.5 10.25 12.5H13.25C13.3881 12.5 13.5 12.3881 13.5 12.25V9.75C13.5 9.61193 13.3881 9.5 13.25 9.5H10.25ZM3 9.25C3 9.05964 3.05964 9 3.25 9H6.25C6.44036 9 6.5 9.05964 6.5 9.25V12.25C6.5 12.4404 6.44036 12.5 6.25 12.5H3.25C3.05964 12.5 3 12.4404 3 12.25V9.25ZM3.25 9.5C3.11193 9.5 3 9.61193 3 9.75V12.25C3 12.3881 3.11193 12.5 3.25 12.5H6.25C6.38807 12.5 6.5 12.3881 6.5 12.25V9.75C6.5 9.61193 6.38807 9.5 6.25 9.5H3.25Z"
-              fill="currentColor"
-            ></path>
-          </svg>
-          <span>Apretar para generar el QR</span>
-
-        </button>
+            Generar QR
+          </button>
+        </div>
       </div>
     </div>
   );
 }
+
+export const AgregarEditarCliente = () => {
+  const [cliente, setCliente] = useState({ nombre: '', edad: '', genero: '', alergia: '', objetivos: "", apikey: false });
+let clienteId = "asd"
+  useEffect(() => {
+    if (clienteId) {
+      // Realiza una solicitud para obtener el cliente por su ID utilizando Axios
+      axios.get(`https://horse-riders-house-production.up.railway.app/v1/whatsapp/ver`)
+        .then((response) => {
+          const data = response.data;
+          if (data.cliente) {
+            console.log(data.cliente);
+            setCliente(data.cliente);
+          } else {
+            console.error('Cliente no encontrado');
+          }
+        })
+        .catch((error) => {
+          console.error('Error al obtener el cliente por ID', error);
+        });
+    }
+  }, []);
+
+  const handleInputChange = (event) => {
+    const { name, value, type, checked } = event.target;
+    setCliente((prevCliente) => ({
+      ...prevCliente,
+      [name]: type === 'checkbox' ? checked : value,
+    }));
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    if (clienteId) {
+      // Realiza una solicitud para editar el cliente
+      fetch(`https://horse-riders-house-production.up.railway.app/v1/whatsapp/editar`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(cliente),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log('Cliente editado con éxito', data);
+          // Redirige o realiza otras acciones necesarias
+        })
+        .catch((error) => {
+          console.error('Error al editar el cliente', error);
+        });
+    } else {
+      // Realiza una solicitud para agregar un nuevo cliente
+      fetch('https://horse-riders-house-production.up.railway.app/v1/whatsapp/agregar', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(cliente),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log('Cliente agregado con éxito', data);
+          // Redirige o realiza otras acciones necesarias
+        })
+        .catch((error) => {
+          console.error('Error al agregar el cliente', error);
+        });
+    }
+  };
+
+  return (
+    <div style={styles.container}>
+      <div style={styles.qrComponent}>
+      </div>
+      <div style={styles.formContainer}>
+        <h2>{clienteId ? 'Editar Cliente' : 'Agregar Cliente'}</h2>
+        <form onSubmit={handleSubmit} style={styles.form}>
+          <div style={styles.formInput}>
+            <label htmlFor="nombre">Nombre:</label>
+            <textarea
+              type="text"
+              id="nombre"
+              name="nombre"
+              value={cliente.nombre}
+              onChange={handleInputChange}
+              required
+            />
+          </div>
+          <div style={styles.formInput}>
+            <label htmlFor="edad">Edad:</label>
+            <textarea
+              type="text"
+              id="edad"
+              name="edad"
+              value={cliente.edad}
+              onChange={handleInputChange}
+              required
+            />
+          </div>
+          <div style={styles.formInput}>
+            <label htmlFor="genero">Género:</label>
+            <textarea
+              type="text"
+              id="genero"
+              name="genero"
+              value={cliente.genero}
+              onChange={handleInputChange}
+              required
+            />
+          </div>
+          <div style={styles.formInput}>
+            <label htmlFor="alergia">Alergia:</label>
+            <textarea
+              type="text"
+              id="alergia"
+              name="alergia"
+              value={cliente.alergia}
+              onChange={handleInputChange}
+              required
+            />
+          </div>
+          <div style={styles.formInput}>
+            <label htmlFor="objetivos">Objetivos:</label>
+            <textarea
+              type="text"
+              id="objetivos"
+              name="objetivos"
+              value={cliente.objetivos}
+              onChange={handleInputChange}
+              required
+            />
+          </div>
+          <div style={styles.formInput}>
+            <label htmlFor="apiKey">API Key:</label>
+            <textarea
+              type="text"
+              id="apiKey"
+              name="apikey"
+              checked={cliente.apikey}
+              onChange={handleInputChange}
+            />
+          </div>
+          <div style={styles.formInput} className="text-right">
+            <button
+              type="submit"
+              style={styles.formButton}
+            >
+              {clienteId ? 'Actualizar' : 'Agregar'}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+};
+

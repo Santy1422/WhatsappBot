@@ -1,6 +1,6 @@
 import { ClientError } from "../utils/errors";
 import clientsHandler from "../services/whatsapp";
-import { users } from "../databases/mongodb/index";
+import { clients, users } from "../databases/mongodb/index";
 
 
 const InitWhatsappClient = async (req, res) => {
@@ -20,10 +20,49 @@ const getQr = async (req, res) => {
   }
 
 
-
+  const Agregar = async (req, res) => {
+    try {
+      const { nombre, edad, genero, alergia, objetivos, apikey } = req.body;
+      const nuevoCliente = new clients({ nombre, edad, genero, alergia, objetivos, apikey });
+      await nuevoCliente.save();
+      res.status(201).json({ mensaje: 'Cliente agregado con éxito', cliente: nuevoCliente });
+    } catch (error) {
+      res.status(500).json({ error: 'Error al agregar el cliente' });
+    }
+  }
+  const Editar = async (req, res) => {
+    try {
+      const { nombre, edad, genero, alergia, objetivos,apikey } = req.body;
+      const clienteActualizado = await clients.findByIdAndUpdate(
+        "65418e37616e0ad6026816aa",
+        { nombre, edad, genero, alergia, objetivos, apikey},
+        { new: true }
+      );
+      if (!clienteActualizado) {
+        return res.status(404).json({ error: 'Cliente no encontrado' });
+      }
+      res.json({ mensaje: 'Cliente actualizado con éxito', cliente: clienteActualizado });
+    } catch (error) {
+      res.status(500).json({ error: 'Error al actualizar el cliente' });
+    }
+  }
+  const Ver = async (req, res) => {
+    try {
+      const cliente = await clients.findById("65418e37616e0ad6026816aa");
+      if (!cliente) {
+        return res.status(404).json({ error: 'Cliente no encontrado' });
+      }
+      res.json({ cliente });
+    } catch (error) {
+      res.status(500).json({ error: 'Error al obtener el cliente' });
+    }
+  }
 const controller = {
 	InitWhatsappClient,
-	getQr
+	getQr,
+  Agregar,
+  Editar,
+  Ver
 }
 
 
