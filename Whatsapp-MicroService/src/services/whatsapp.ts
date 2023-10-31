@@ -29,7 +29,6 @@ class WspClientsHandler {
 	}
 
 	async AddNewClient(webId: string) {
-		if (this.AllClients[webId]) throw new Error("Ya está logeado"); //verifica si ya no está logeado
 		this._zAttachNewClient(webId)
 		this.AllClients[webId].initialize()
 		this._zAttachQREventHandler_Option_TWO(webId)

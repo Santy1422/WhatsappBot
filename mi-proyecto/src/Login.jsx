@@ -9,33 +9,26 @@ export const Login = ({setSteps, steps, usuario, contraseña,}) => {
         if(username === usuario && pas === contraseña) setSteps(1)
     }
 return(
-    <section class="bg-gray-50 dark:bg-gray-900">
-  <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-      <a href="#" class="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
-          <img class="w-8 h-8 mr-2" src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/logo.svg" alt="logo"/>
-          Flowbite    
+    <section style={{ backgroundColor: '#f7fafc', display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}>
+    <div style={{ width: '100%', maxWidth: '400px', padding: '20px', backgroundColor: '#fff', borderRadius: '8px', boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)', border: '1px solid #e2e8f0' }}>
+      <a href="#" style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem', fontSize: '1.25rem', fontWeight: '600', color: '#333', textDecoration: 'none' }}>
+        <img style={{ width: '32px', height: '32px', marginRight: '8px' }} src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/logo.svg" alt="logo"/>
+        Whatsapp Login    
       </a>
-      <div class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
-          <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
-              <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-                  Sign in to your account
-              </h1>
-              <form class="space-y-4 md:space-y-6" action="#">
-                  <div>
-                      <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Usuario</label>
-                      <input type="email" name="email" id="email" value={username} onChange={(e) => setUsername(e.target.value)} class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="name@company.com" required=""/>
-                  </div>
-                  <div>
-                      <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Contraseña</label>
-                      <input type="password" name="password" id="password" value={pas} onChange={(e) => setPas(e.target.value)} placeholder="••••••••" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required=""/>
-                  </div>
-                  
-                  <button onClick={() => nextStep()} class="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Sign in</button>
-                
-              </form>
-          </div>
+      <h1 style={{ fontSize: '1.5rem', fontWeight: 'bold', lineHeight: '1.25', marginBottom: '1rem', color: '#333' }}>Sign in to your account</h1>
+      <div style={{ display: 'flex', flexDirection: 'column' }}>
+        <div style={{ marginBottom: '1rem' }}>
+          <label htmlFor="username" style={{ marginBottom: '0.5rem', fontSize: '0.875rem', fontWeight: '600', color: '#333' }}>Usuario</label>
+          <input type="text" id="username" value={username} onChange={(e) => setUsername(e.target.value)} style={{ backgroundColor: '#f7fafc', border: '1px solid #e2e8f0', color: '#333', padding: '0.625rem', borderRadius: '0.375rem', outline: 'none' }} placeholder="name@company.com" required />
+        </div>
+        <div style={{ marginBottom: '1rem' }}>
+          <label htmlFor="password" style={{ marginBottom: '0.5rem', fontSize: '0.875rem', fontWeight: '600', color: '#333' }}>Contraseña</label>
+          <input type="password" id="password" value={pas} onChange={(e) => setPas(e.target.value)} style={{ backgroundColor: '#f7fafc', border: '1px solid #e2e8f0', color: '#333', padding: '0.625rem', borderRadius: '0.375rem', outline: 'none' }} placeholder="••••••••" required />
+        </div>
+        <button onClick={() => nextStep()} style={{ backgroundColor: '#333', color: '#fff', border: 'none', padding: '0.625rem', borderRadius: '0.375rem', fontSize: '0.875rem', fontWeight: '600', cursor: 'pointer' }}>Login</button>
       </div>
-  </div>
-</section>
+    </div>
+  </section>
+
 )
 }

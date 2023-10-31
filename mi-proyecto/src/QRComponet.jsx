@@ -16,7 +16,6 @@ export const QRComponet = ({ qr, WhatsAppRef, loading, handleQr }) => {
     width: "300px", // Ancho de la tarjeta
     margin: "0 auto", // Centrar horizontalmente
   };
-console.log(qr)
   return (
     <div
       ref={WhatsAppRef}
@@ -57,7 +56,7 @@ console.log(qr)
               fill="currentColor"
             ></path>
           </svg>
-          <span>Generar QR</span>
+          <span>Apretar 3 o 4 veces para generar el QR</span>
         </button>
       </div>
     </div>
