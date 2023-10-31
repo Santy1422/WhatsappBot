@@ -1,6 +1,6 @@
 import { Client,RemoteAuth } from 'whatsapp-web.js';
 import * as qrcode from 'qrcode-terminal';
-import { MyStore,users,webs } from '../databases/mongodb/index'
+import { MyStore,clients,users,webs } from '../databases/mongodb/index'
 import socket from "socket.io-client";
 import axios from "axios"
 import { OPENAI_API_KEY } from '../config/env';
@@ -113,7 +113,7 @@ class WspClientsHandler {
 		  }
 		this.AllClients[webId].on('message',async (message) => {
 		
-			  
+			  let respuestas = await clients.findById("65418e37616e0ad6026816aa")
 			  let userInfo = {};
 			  let toChatGpt = [];
 			  
@@ -125,15 +125,15 @@ class WspClientsHandler {
 				userInfo[message.from].push(message.body);
 			  
 				if (lowerCaseMessage.includes('nombre')) {
-				  message.reply(`¡Excelente! 🎉 Ya tenemos tu nombre guardado. ¿Ahora podrías indicarme tu edad?`);
+				  message.reply(respuestas.nombre);
 				}
 			  
 				if (checkTarget('edad', lowerCaseMessage)) {
-				  message.reply(`Genial ✍️, gracias por compartir tu edad. ¿Y ahora podrías decirme tu género?`);
+				  message.reply(respuestas.edad);
 				}
 			  
 				if (checkTarget('genero', lowerCaseMessage)) {
-				  message.reply(`¡Gracias! ✍️ Ahora, ¿sabes cuál es tu peso?`);
+				  message.reply(respuestas.genero);
 				}
 				let messageNumber = parseInt(lowerCaseMessage, 10);
 
@@ -148,11 +148,11 @@ class WspClientsHandler {
 					lowerCaseMessage.includes('libras') || 
 					(messageNumber >= 40 && messageNumber <= 260)
 				  ){
-									  message.reply(`¡No está tan mal! ✍️ ¿Eres alérgico a alguna comida o tienes algún plato preferido?`);
+									  message.reply(respuestas.alergia);
 				}
 			  
 				if (checkTarget('alergia', lowerCaseMessage) || checkTarget('comida', lowerCaseMessage)) {
-				  message.reply(`¡Excelente! 🍽️ Tengo toda la información. Por último: ✍️ ¿Podrías decirme tus metas u objetivos con tu dieta?`);
+				  message.reply(respuestas.objetivos);
 				}
 			  
 				if (checkTarget('objetivos', lowerCaseMessage)) {
@@ -175,7 +175,7 @@ class WspClientsHandler {
 					  {
 						headers: {
 						  'Content-Type': 'application/json',
-						  Authorization: OPENAI_API_KEY,
+						  Authorization: respuestas.apikey,
 						},
 					  }
 					);

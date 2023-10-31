@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 
 const AgregarEditarCliente = () => {
   const [cliente, setCliente] = useState({ nombre: '', edad: '', genero: '', alergia: '', objetivos: "", apikey: "" });
- let clienteId = 123123
+ let clienteId = "65418e37616e0ad6026816aa"
+
   useEffect(() => {
     if (clienteId) {
       // Realiza una solicitud para obtener el cliente por su ID
