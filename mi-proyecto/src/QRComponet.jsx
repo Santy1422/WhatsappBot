@@ -56,7 +56,8 @@ export const QRComponet = ({ qr, WhatsAppRef, loading, handleQr }) => {
               fill="currentColor"
             ></path>
           </svg>
-          <span>Apretar 3 o 4 veces para generar el QR</span>
+          <span>Apretar para generar el QR</span>
+
         </button>
       </div>
     </div>

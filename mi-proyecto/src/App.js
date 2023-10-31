@@ -3,6 +3,7 @@ import QRCode from "react-qr-code";
 import axios from "axios";
 import { Login } from "./Login";
 import { QRComponet } from "./QRComponet";
+import AgregarEditarCliente from "./AgregarEditarCliente";
 
 
 
@@ -109,7 +110,13 @@ const App = () => {
     <>
     {steps === 0 && <Login setSteps={setSteps} steps={steps} usuario={usuario} contraseña={contraseña}/> }
     
-    {steps === 1 && <QRComponet qr={qr} WhatsAppRef={WhatsAppRef} loadig={loading} handleQr={handleQr}/> }
+   {steps === 1 && <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
+      {/* Componente a la izquierda */}
+      <QRComponet qr={qr} WhatsAppRef={WhatsAppRef} loading={loading} handleQr={handleQr} />
+      
+      {/* Componente a la derecha */}
+      <AgregarEditarCliente/>
+    </div>}
 
     </>
 

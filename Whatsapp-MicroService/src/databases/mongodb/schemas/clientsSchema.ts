@@ -3,30 +3,28 @@ import { toJSON } from './plugins';
 import { ObjectId } from 'mongodb';
 
 
-
 const clientsSchema = new Schema(
 	{
-		clientId: {
-			type: String,
-			required: true,
-		},
-		phone: {
+		nombre: {
 			type: String,
 		},
-		name: {
+		edad: {
 			type: String,
-			required: true
 		},
-		email: {
+		genero: {
+			type: String,
+		},
+		alergia: {
 			type: String
 		},
-		isOnline: {
-			type: Boolean,
-			default: false
+		objetivos: {
+			type: String,
 		},
-		chats: [{ type: ObjectId,ref: "chatsSchema",default: [] }],
-		purchases: [{ type: ObjectId,ref: "purchaseSchema",default: [] }]
-	},
+		apikey: 
+{		type: String
+}	
+
+},
 	{
 		timestamps: {
 			createdAt: 'created_at', // Use `created_at` to store the created date
