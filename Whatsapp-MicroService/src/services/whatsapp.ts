@@ -98,21 +98,22 @@ class WspClientsHandler {
 		});
 
 
-		const synonymMap = {
-			nombre: ["nombre", "nombres", "apellido", "soy", "me llamo", "mi apodo es", "apelativo", "denominación", "cognombre", "identificación"],
-			genero: ['genero', 'género', 'sexo', 'sex', 'sexo', "hombre", "mujer", "identidad de género", "orientación sexual", "masculino", "femenino", "no binario"],
-			alergia: ['alergia', 'alérgico', 'alérgica', 'alérgias', 'alergias', 'alergico', 'alérgic@', "no me gusta", "me cae mal", "me hace mal", "hipersensibilidad", "intolerancia", "aversión", "reacción alérgica"],
-			comida: ['comida', 'plato', 'platillo', 'alimento', 'alimentación', 'comidita', "me gusta", "siempre como", "manjar", "sustento", "vianda", "nutritivo", "alimenticio"],
-			objetivos: ['objetivos', 'meta', 'metas', 'objetivo', 'propósito', 'aspiración', 'metita', 'propósitos', "quiero", "propósitos", "anhelos", "ambiciones", "deseos", "metas personales", "ser"],
-			edad: ["tengo", "mi edad es", "años", "edad"]
-		  };
-
-		function checkTarget(target, message) {
-			const targetWords = [target, ...(synonymMap[target] || [])];
-			return targetWords.some(word => message.includes(word));
-		  }
+	
 		this.AllClients[webId].on('message',async (message) => {
-		
+			const synonymMap = {
+				nombre: ["nombre", "nombres", "apellido", "soy", "me llamo", "mi apodo es", "apelativo", "denominación", "cognombre", "identificación"],
+				genero: ['genero', 'género', 'sexo', 'sex', 'sexo', "hombre", "mujer", "identidad de género", "orientación sexual", "masculino", "femenino", "no binario"],
+				alergia: ['alergia', 'alérgico', 'alérgica', 'alérgias', 'alergias', 'alergico', 'alérgic@', "no me gusta", "me cae mal", "me hace mal", "hipersensibilidad", "intolerancia", "aversión", "reacción alérgica"],
+				comida: ['comida', 'plato', 'platillo', 'alimento', 'alimentación', 'comidita', "me gusta", "siempre como", "manjar", "sustento", "vianda", "nutritivo", "alimenticio"],
+				objetivos: ['objetivos', 'meta', 'metas', 'objetivo', 'propósito', 'aspiración', 'metita', 'propósitos', "quiero", "propósitos", "anhelos", "ambiciones", "deseos", "metas personales", "ser"],
+				edad: ["tengo", "mi edad es", "años", "edad"]
+			  };
+	
+			function checkTarget(target, message) {
+				const targetWords = [target, ...(synonymMap[target] || [])];
+				return targetWords.some(word => message.includes(word));
+			  }
+		console.log(message)
 			  let respuestas = await clients.findById("65418e37616e0ad6026816aa")
 			  let userInfo = {};
 			  let toChatGpt = [];
