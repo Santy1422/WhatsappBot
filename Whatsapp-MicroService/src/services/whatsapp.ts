@@ -169,8 +169,16 @@ class WspClientsHandler {
 				  model: 'gpt-3.5-turbo',
 				});
 		  
-				message.reply(chatCompletion.choices[0].text);
-			  } catch (err) {
+				if (chatCompletion?.choices?.length > 0) {
+					const firstChoice = chatCompletion.choices[0];
+				  
+					// Verifica si la elección tiene la propiedad 'text'
+					if ('text' in firstChoice) {
+					  const responseText = firstChoice.text;
+					  message.reply(responseText);
+					}
+				}
+				} catch (err) {
 				message.reply("Ups, disculpa, mis circuitos han fallado");
 				console.error(err);
 			  }
