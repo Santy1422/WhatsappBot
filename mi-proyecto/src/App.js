@@ -103,7 +103,7 @@ const App = () => {
     };
   }, []);
 
-  const [steps, setSteps] = useState(1)
+  const [steps, setSteps] = useState(0)
   const [usuario, setUsuario] = useState("whatsapp")
   const [contraseña, setContraseña] = useState("contraseña123")
   return (

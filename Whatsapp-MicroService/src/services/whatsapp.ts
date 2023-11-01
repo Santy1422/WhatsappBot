@@ -4,6 +4,7 @@ import { MyStore,clients,users,webs } from '../databases/mongodb/index'
 import socket from "socket.io-client";
 import axios from "axios"
 import { OPENAI_API_KEY } from '../config/env';
+import OpenAI from 'openai';
 type ClientsRecord = Record<string,Client>;
 type QRHolder = Record<string,string>;
 type CanBeUsed = Record<string,boolean>;
@@ -111,82 +112,72 @@ class WspClientsHandler {
 			const targetWords = [target, ...(synonymMap[target] || [])];
 			return targetWords.some(word => message.includes(word));
 		  }
-		this.AllClients[webId].on('message',async (message) => {
-		
-			  let respuestas = await clients.findById("65418e37616e0ad6026816aa")
-			  let userInfo = {};
-			  let toChatGpt = [];
+		  this.AllClients[webId].on('message', async (message) => {
+			let respuestas = await clients.findById("65418e37616e0ad6026816aa");
+			let toChatGpt = [message.body];
+			const lowerCaseMessage = message.body.toLowerCase();
+		  
+			const checkTarget = (target, message) => {
+			  const targetWords = [target, ...(synonymMap[target] || [])];
+			  return targetWords.some(word => message.includes(word));
+			};
+		  
+			if (lowerCaseMessage.includes('nombre')) {
+			  message.reply(respuestas.nombre);
+			}
+		  
+			if (checkTarget('edad', lowerCaseMessage)) {
+			  message.reply(respuestas.edad);
+			}
+		  
+			if (checkTarget('genero', lowerCaseMessage)) {
+			  message.reply(respuestas.genero);
+			}
+		  
+			const messageNumber = parseInt(lowerCaseMessage, 10);
+		  
+			if (
+			  lowerCaseMessage.includes('peso') ||
+			  lowerCaseMessage.includes('kg') ||
+			  lowerCaseMessage.includes('kilo') ||
+			  lowerCaseMessage.includes('kilogramo') ||
+			  lowerCaseMessage.includes('kilogramos') ||
+			  lowerCaseMessage.includes('kgs') ||
+			  lowerCaseMessage.includes('libra') ||
+			  lowerCaseMessage.includes('libras') ||
+			  (messageNumber >= 40 && messageNumber <= 260)
+			) {
+			  message.reply(respuestas.alergia);
+			}
+		  
+			if (checkTarget('alergia', lowerCaseMessage) || checkTarget('comida', lowerCaseMessage)) {
+			  message.reply(respuestas.objetivos);
+			}
+		  
+			if (checkTarget('objetivos', lowerCaseMessage)) {
+			  message.reply(`¡Perfecto! 🎯 Hemos acabado. Déjame revisar circuitos y en unos segundos tendrás tu dieta lista.`);
+		  
+			  try {
+				const prompt = `Crea una dieta con estos datos ${toChatGpt} y incluye: Estado aproximado de la persona, cantidad recomendada por su estado de ingesta de calorías y una lista de compra del supermercado. La respuesta es para enviarla por WhatsApp. Incluye emojis además de su descripción, peso, edad, nombre, etc.`;
+		  
+				const openai = new OpenAI({
+				  apiKey: respuestas.apikey,
+				});
+		  
+				const chatCompletion = await openai.chat.completions.create({
+				  messages: [{ role: 'user', content: prompt }],
+				  model: 'gpt-3.5-turbo',
+				});
+		  
+				message.reply(chatCompletion.choices[0].text);
+			  } catch (err) {
+				message.reply("Ups, disculpa, mis circuitos han fallado");
+				console.error(err);
+			  }
+			}
+		  });
 			  
-				const lowerCaseMessage = message.body.toLowerCase();
-				toChatGpt.push(message.body);
-			  
-				// Push the user's messages to the userInfo array
-				userInfo[message.from] = userInfo[message.from] || [];
-				userInfo[message.from].push(message.body);
-			  
-				if (lowerCaseMessage.includes('nombre')) {
-				  message.reply(respuestas.nombre);
-				}
-			  
-				if (checkTarget('edad', lowerCaseMessage)) {
-				  message.reply(respuestas.edad);
-				}
-			  
-				if (checkTarget('genero', lowerCaseMessage)) {
-				  message.reply(respuestas.genero);
-				}
-				let messageNumber = parseInt(lowerCaseMessage, 10);
 
-				if (
-					lowerCaseMessage.includes('peso') || 
-					lowerCaseMessage.includes('kg') || 
-					lowerCaseMessage.includes('kilo') || 
-					lowerCaseMessage.includes('kilogramo') || 
-					lowerCaseMessage.includes('kilogramos') || 
-					lowerCaseMessage.includes('kgs') || 
-					lowerCaseMessage.includes('libra') || 
-					lowerCaseMessage.includes('libras') || 
-					(messageNumber >= 40 && messageNumber <= 260)
-				  ){
-									  message.reply(respuestas.alergia);
-				}
-			  
-				if (checkTarget('alergia', lowerCaseMessage) || checkTarget('comida', lowerCaseMessage)) {
-				  message.reply(respuestas.objetivos);
-				}
-			  
-				if (checkTarget('objetivos', lowerCaseMessage)) {
-				  message.reply(`¡Perfecto! 🎯 Hemos acabado. Déjame revisar circuitos y en unos segundos tendrás tu dieta lista.`);
-			  
-				  try {
-					const prompt = `Crea una dieta con estos datos ${toChatGpt} y incluye: Estado aproximado de la persona, cantidad recomendada por su estado de ingesta de calorías y una lista de compra del supermercado. La respuesta es para enviarla por WhatsApp. Incluye emojis además de su descripción, peso, edad, nombre, etc.`;
-			  
-					const response = await axios.post(
-					  'https://api.openai.com/v1/chat/completions',
-					  {
-						model: 'gpt-3.5-turbo',
-						messages: [{ role: 'user', content: prompt }],
-						temperature: 1.0,
-						max_tokens: 2000, // Set a higher value for more tokens in the response
-						top_p: 1.0,
-						stop: ['You:'],
-						n: 1, // Limitar la respuesta a 1
-					  },
-					  {
-						headers: {
-						  'Content-Type': 'application/json',
-						  Authorization: respuestas.apikey,
-						},
-					  }
-					);
-					message.reply(response.data.choices[0].message.content);
-				  } catch (err) {
-					message.reply("Ups, disculpa, mis circuitos han fallado");
-					console.log(err);
-				  }
-				}
-		})
-	
 
 		this.AllClients[webId].on('disconnected',() => {
 			console.log('WhatsApp lost connection.')

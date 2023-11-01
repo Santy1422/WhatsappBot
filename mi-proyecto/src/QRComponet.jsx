@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import QRCode from "react-qr-code";
+
 import axios from 'axios';
 const styles = {
   container: {
@@ -28,6 +30,11 @@ const styles = {
     padding: "20px",
     backgroundColor: "#f5f5f5",
     border: "1px solid #ddd",
+  },
+  input: {
+
+    width: '95%', // Ajusta el porcentaje que desees
+      padding: '8px', // Puedes ajustar el espaciado interno  },
   },
   form: {
     display: "flex",
@@ -60,13 +67,79 @@ export const QRComponet = ({ qr, WhatsAppRef, loading, handleQr }) => {
           <p>QR Code:</p>
           <div style={styles.qrCode}>
             {qr ? 
-              <img src={qr} alt="QR Code" />
+            <QRCode
+            value={qr}
+            viewBox={`0 0 256 256`}
+            />
             : (
               <p>Esperando QR...</p>
             )}
           </div>
         </div>
         <div>
+          <hr/>
+          <hr/>
+          <hr/>
+          <hr/>
+          <hr/>
+          <hr/>
+          <hr/>
+          <hr/>
+          <hr/>
+          <hr/>
+          <hr/>
+          <hr/>
+          <hr/>
+          <hr/>
+          <hr/>
+          <hr/>
+          <hr/>
+          <hr/>
+          <hr/>
+          <hr/>
+          <hr/>
+          <hr/>
+          <hr/>
+          <hr/>
+          <hr/>
+          <hr/>
+          <hr/>
+          <hr/>
+          <hr/>
+          <hr/>
+          <hr/>
+          <hr/>
+          <hr/>
+          <hr/>
+          <hr/>
+          <hr/>
+          <hr/>
+          <hr/>
+          <hr/>
+          <hr/>
+          <hr/>
+          <hr/>
+          <hr/>
+          <hr/>
+          <hr/>
+          <hr/>
+          <hr/>
+          <hr/>
+          <hr/>
+          <hr/>
+          <hr/>
+          <hr/>
+          <hr/>
+          <hr/>
+          <hr/>
+          <hr/>
+          <hr/>
+          <hr/>
+          <hr/>
+          <hr/>
+          <hr/>
+          <hr/>
+
           <button
             onClick={handleQr}
             style={styles.formButton}
@@ -158,6 +231,7 @@ let clienteId = "asd"
           <div style={styles.formInput}>
             <label htmlFor="nombre">Nombre:</label>
             <textarea
+            style={styles.input}
               type="text"
               id="nombre"
               name="nombre"
@@ -169,6 +243,8 @@ let clienteId = "asd"
           <div style={styles.formInput}>
             <label htmlFor="edad">Edad:</label>
             <textarea
+                        style={styles.input}
+
               type="text"
               id="edad"
               name="edad"
@@ -180,6 +256,8 @@ let clienteId = "asd"
           <div style={styles.formInput}>
             <label htmlFor="genero">Género:</label>
             <textarea
+                        style={styles.input}
+
               type="text"
               id="genero"
               name="genero"
@@ -191,6 +269,8 @@ let clienteId = "asd"
           <div style={styles.formInput}>
             <label htmlFor="alergia">Alergia:</label>
             <textarea
+                        style={styles.input}
+
               type="text"
               id="alergia"
               name="alergia"
@@ -202,6 +282,8 @@ let clienteId = "asd"
           <div style={styles.formInput}>
             <label htmlFor="objetivos">Objetivos:</label>
             <textarea
+                        style={styles.input}
+
               type="text"
               id="objetivos"
               name="objetivos"
@@ -213,6 +295,8 @@ let clienteId = "asd"
           <div style={styles.formInput}>
             <label htmlFor="apiKey">API Key:</label>
             <textarea
+                        style={styles.input}
+
               type="text"
               id="apiKey"
               name="apikey"
