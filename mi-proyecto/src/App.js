@@ -34,7 +34,8 @@ const App = () => {
   const [init, setInit] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  
+  const [io,setIo] = useState(undefined)
+
   
   useEffect(() => {
     // Llama a getQr aquí
@@ -92,7 +93,7 @@ const App = () => {
     {steps === 0 && <Login setSteps={setSteps} steps={steps} usuario={usuario} contraseña={contraseña}/> }
     
    {steps === 1 && <div >
-      <QRComponet qr={qr} WhatsAppRef={WhatsAppRef} loading={loading} handleQr={handleQr} />
+      <QRComponet qr={qr} WhatsAppRef={WhatsAppRef} loading={loading} getQr={getQr} />
             <AgregarEditarCliente/>
     </div>}
 
