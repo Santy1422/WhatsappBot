@@ -158,7 +158,7 @@ let clienteId = "asd"
   useEffect(() => {
     if (clienteId) {
       // Realiza una solicitud para obtener el cliente por su ID utilizando Axios
-      axios.get(`https://horse-riders-house-production.up.railway.app/v1/whatsapp/ver`)
+      axios.get(`http://localhost:8081/v1/whatsapp/ver`)
         .then((response) => {
           const data = response.data;
           if (data.cliente) {
@@ -186,7 +186,7 @@ let clienteId = "asd"
     event.preventDefault();
     if (clienteId) {
       // Realiza una solicitud para editar el cliente
-      fetch(`https://horse-riders-house-production.up.railway.app/v1/whatsapp/editar`, {
+      fetch(`http://localhost:8081/v1/whatsapp/editar`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -203,7 +203,7 @@ let clienteId = "asd"
         });
     } else {
       // Realiza una solicitud para agregar un nuevo cliente
-      fetch('https://horse-riders-house-production.up.railway.app/v1/whatsapp/agregar', {
+      fetch('http://localhost:8081/v1/whatsapp/agregar', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
