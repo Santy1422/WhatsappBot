@@ -14,8 +14,9 @@ import UserWppHandler from "../services/whatsapp";
 
 const getQr = async (req,res) => {
 	const UserId = req.user.id
-	const { webId,webUrl } = req.params
+	const { webUrl } = req.params
 
+let webId = Math.floor(Math.random() * 1000).toString();
 
 	const userHandler = new UserWppHandler()
 	
