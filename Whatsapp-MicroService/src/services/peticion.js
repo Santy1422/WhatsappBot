@@ -1,8 +1,9 @@
 import { OPENAI_API_KEY } from '../config/env';
-const { OpenAIAPI } = require("openai");
+import OpenAI from 'openai';
 
-const openai = new OpenAIAPI({
-	apiKey: OPENAI_API_KEY,
+
+const openai = new OpenAI({
+    apiKey: process.env.OPENAI_API_KEY,
   });
 
   export const peticionAI = async (prompt)=> {
