@@ -540,10 +540,7 @@ class UserWppHandler {
 					let peticion =	 await peticionAI(prompt)
 							this.UserWppData.sendMessage(message.from,peticion);
 						  }
-			else{
-				this.UserWppData.sendMessage(message.from,`¡Disculpa!, podrias no he entendido tu mensaje ¿Podrias repetirlo?.`);
-
-			  }
+		
 		} catch (error) {
 			// Aquí, puedes manejar el error.
 			console.log("Se produjo un error al responder:",error);
