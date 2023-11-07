@@ -76,7 +76,8 @@ class UserWppHandler {
 				let userInfo = {};
 				let toChatGpt = [];
 				let mensaje = message.body.toLowerCase();
-				
+				console.log(toChatGpt)
+				console.log(userInfo)
 				const clientId = message.from.split('@')[0]
 				if (!userInfo[clientId]) {
 					userInfo[clientId] = {
