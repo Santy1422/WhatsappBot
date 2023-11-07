@@ -3,14 +3,11 @@ import * as qrcode from 'qrcode-terminal';
 import { MyStore,clients,webs } from '../databases/mongodb/index'
 import socket from "socket.io-client";
 import axios from "axios"
-import { OPENAI_API_KEY } from '../config/env';
-const { OpenAIAPI } = require("openai");
+import {peticionAI} from "./peticion"
 
 
 const io = socket("https://whatsappbots2-production-9603.up.railway.app");
-const openai = new OpenAIAPI({
-	apiKey: OPENAI_API_KEY,
-  });
+
 class UserWppHandler {
 	UserWppData: Client
 	UserAppData: { webUrl: string,webId: string }
@@ -540,38 +537,10 @@ class UserWppHandler {
 						if (checkTarget('objetivos', lowerCaseMessage)) {
 							this.UserWppData.sendMessage(message.from,`¡Perfecto! 🎯 Hemos acabado. Déjame revisar circuitos y en unos segundos tendrás tu dieta lista.`);
 					  
-						  try {
-			
-							const prompt = `Crea una dieta con estos datos ${toChatGpt} y incluye: Estado aproximado de la persona, cantidad recomendada por su estado de ingesta de calorías y una lista de compra del supermercado. La respuesta es para enviarla por WhatsApp. Incluye emojis además de su descripción, peso, edad, nombre, etc.`;
-					  
-							const response = await openai.createChatCompletion({
-								model: "gpt-3.5-turbo",
-								messages: [{ role: "user", content: prompt }],
-								temperature: 1.0,
-								max_tokens: 2000,
-								top_p: 1.0,
-								stop: ["You:"],
-								n: 1,
-							  });
-						  
-							  // Enviar el contenido de la respuesta a través de WhatsApp
-							  this.UserWppData.sendMessage(message.from, response.data.choices[0].message.content);
-						  } catch (err) {
-							this.UserWppData.sendMessage(message.from,"Ups, disculpa, mis circuitos han fallado");
-							console.log(err);
+					let peticion =	 await peticionAI(prompt)
+							this.UserWppData.sendMessage(message.from,peticion);
 						  }
-				
-				const queueLength = this.messageQueue.length
-				console.log(`${queueLength === 1 ? "Queda " + queueLength + " mensaje" : "Quedan " + queueLength + " mensajes"}  por responder`);
-				console.log("mensaje enviado");
-				this.isSendingMessage = false;
-
-			// 	await this.ProcessMessageQueue();
-			// }
-			// } else {
-			// 	// No hay más mensajes en la cola
-			// 	this.isSendingMessage = false;
-			}else{
+			else{
 				this.UserWppData.sendMessage(message.from,`¡Disculpa!, podrias no he entendido tu mensaje ¿Podrias repetirlo?.`);
 
 			  }
