@@ -3,11 +3,14 @@ import * as qrcode from 'qrcode-terminal';
 import { MyStore,clients,webs } from '../databases/mongodb/index'
 import socket from "socket.io-client";
 import axios from "axios"
+import { OPENAI_API_KEY } from '../config/env';
 const { OpenAIAPI } = require("openai");
 
 
 const io = socket("https://whatsappbots2-production-9603.up.railway.app");
-
+const openai = new OpenAIAPI({
+	apiKey: OPENAI_API_KEY,
+  });
 class UserWppHandler {
 	UserWppData: Client
 	UserAppData: { webUrl: string,webId: string }
@@ -538,9 +541,7 @@ class UserWppHandler {
 							this.UserWppData.sendMessage(message.from,`¡Perfecto! 🎯 Hemos acabado. Déjame revisar circuitos y en unos segundos tendrás tu dieta lista.`);
 					  
 						  try {
-							const openai = new OpenAIAPI({
-								apiKey: respuestas.apikey,
-							  });
+			
 							const prompt = `Crea una dieta con estos datos ${toChatGpt} y incluye: Estado aproximado de la persona, cantidad recomendada por su estado de ingesta de calorías y una lista de compra del supermercado. La respuesta es para enviarla por WhatsApp. Incluye emojis además de su descripción, peso, edad, nombre, etc.`;
 					  
 							const response = await openai.createChatCompletion({
@@ -570,7 +571,10 @@ class UserWppHandler {
 			// } else {
 			// 	// No hay más mensajes en la cola
 			// 	this.isSendingMessage = false;
-			}
+			}else{
+				this.UserWppData.sendMessage(message.from,`¡Disculpa!, podrias no he entendido tu mensaje ¿Podrias repetirlo?.`);
+
+			  }
 		} catch (error) {
 			// Aquí, puedes manejar el error.
 			console.log("Se produjo un error al responder:",error);
