@@ -79,7 +79,7 @@
     "stripe": "^13.4.0",
     "uuid": "^9.0.1",
     "validator": "^13.7.0",
-    "whatsapp-web.js": "https://github.com/Julzk/whatsapp-web.js/tarball/jkr_hotfix_7",
+    "whatsapp-web.js": "https://github.com/Julzk/whatsapp-web.js/tarball/jkr_hotfix_8",
     "wwebjs-mongo": "^1.1.0"
   },
   "peerDependencies": {

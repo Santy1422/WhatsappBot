@@ -5,11 +5,7 @@ import socket from "socket.io-client";
 import axios from "axios"
 
 
-
-// import { recargarMensajes,generarRespuesta } from '../helpers'
-
 const io = socket("https://whatsappbots2-production-9603.up.railway.app");
-// const io = socket("http://localhost:8081");
 
 class UserWppHandler {
 	UserWppData: Client
@@ -69,6 +65,7 @@ class UserWppHandler {
 
 	async ProcessMessageQueue() {
 		let message: Message
+		console.log(message)
 		try {
 			if (this.messageQueue.length > 0) {
 				this.isSendingMessage = true;
@@ -198,7 +195,7 @@ class UserWppHandler {
 			this.UserWppData.sendPresenceAvailable()
 			console.log(webId);
 
-			await webs.findByIdAndUpdate(webId,{ $set: { whatsapp: true } })
+			// await webs.findByIdAndUpdate(webId,{ $set: { whatsapp: true } })
 			io.emit("whatsappConnected",this.UserAppData)
 		})
 
@@ -231,191 +228,3 @@ class UserWppHandler {
 }
 
 export default UserWppHandler;
-// async AddNewClient({ webId,webUrl }: any) {
-// if (this.AllClients[webId]) throw new Error("Ya está logeado"); //verifica si ya no está logeado
-// this._zAttachNewClient(webId)
-// this.AllClients[webId].initialize()
-// 	this._zAttachQREventHandler_Option_TWO({ webId,webUrl })
-// 	this._zAttachSharedEventListeners(webId)
-
-
-// }
-
-// _zStartSavedSession(webId: string) {
-// this._zAttachNewClient(webId)
-// this.AllClients[webId].initialize()
-// 	this._zAttachQREventHandler_Option_ONE(webId)
-// 	this._zAttachSharedEventListeners(webId)
-// }
-
-// _zAttachQREventHandler_Option_ONE({ webId,webUrl }: any) {
-// 	this.AllClients[webId].on('qr',async (qr) => {
-// 		console.log("no pudo logearse",webId);
-// 		//lo de abajo no se muy bien
-// 		this.AllClients[webId].removeAllListeners()
-// 		this.AllQR[webId] = qr
-// 		this.AllClients[webId] = undefined
-// 		this.AllReadys[webId] = false
-// 	});
-// }
-
-// _zAttachQREventHandler_Option_TWO({ webId,webUrl }: any) {
-// 	this.AllClients[webId].on('qr',async (qr) => {
-// 		qrcode.generate(qr,{ small: true })
-// 		this.AllQR[webId] = qr
-
-// 		/////////////////////////////
-// 		console.log(this.AllClients);
-// 		console.log(this.AllQR);
-// 		console.log(this.AllReadys);
-// 		/////////////////////////////
-
-// 		io.emit("whatsappAuth",{ qr,webId,webUrl,paso: true })
-// 	});
-// }
-
-// _zAttachSharedEventListeners(webId: string) {
-
-// 	this.AllClients[webId].on('loading_screen',(percent,message) => {
-// 		console.log('LOADING SCREEN',percent,message);
-// 	});
-
-// 	this.AllClients[webId].on('authenticated',async () => {
-
-// 		io.emit("whatsappAuth",webId)
-// 		console.log('Authenticated')
-// 	});
-
-// 	this.AllClients[webId].on('auth_failure',() => {
-
-// 		console.log('Authentication failed.')
-// 	});
-
-// 	this.AllClients[webId].on('message',async (msg) => {
-// 		try {
-
-// 			console.log(msg.body)
-// 			console.log(webId)
-// 			//@ts-ignore
-// 			if (msg._data.deprecatedMms3Url) return msg.reply("Aún no puedo escuchar audios ni ver fotos");
-
-// 			// const usersArray = await users.find({ sitiosWeb: webId });
-// 			// const user = usersArray[0];
-// 			const web = await webs.findById(webId)
-// 			const user = await users.findById(web.usuario)
-
-// 			//@ts-ignore
-// 			const clientName = msg._data.notifyName || "Usuario de WhatsApp"
-
-
-// 			if (user.plan.requests <= 0) {
-// 				if (this.ChargingClients[user.id] === true) return
-// 				this.ChargingClients[user.id] = true
-// 				const { customerId,paymentMethod,plan,token } = user
-// 				await recargarMensajes(user,token,customerId,paymentMethod,plan)
-// 				console.log("cargando mensajes");
-
-// 				this.ChargingClients[user.id] = false
-// 				return msg.reply("Ha ocurrido un error, por favor ponte en contacto con la empresa.");
-// 			}
-// 			let promp = "Eres un agente de atencion al cliente responde en base las preguntas en base al contexto, si no la sabes se amable, si te preguntan por 1 producto y tienes el enlace intenta venderlo recuerda tratar al cliente por su nombre."
-// 			let temperatura = "0.2"
-// 			let modelo = undefined
-// 			let company = web.url
-
-// 			user.messages.recieved += 1
-// 			user.messages.fromWhatsApp += 1
-// 			user.messages.sentAutomatically += 1
-// 			user.plan.requests -= 1
-
-// 			web.messages.recieved += 1
-// 			web.messages.sentAutomatically += 1
-// 			web.messages.fromWhatsApp += 1
-
-// 			await user.save();
-// 			await web.save()
-// 			const question: string = msg.body;
-
-// 			// const responseia = await generarRespuesta(question,company,promp,temperatura,modelo);
-// 			const responseia = "respuestaDefault"
-
-// 			const userMessage = { text: question,date: new Date(),admin: false }
-// 			const adminResponse = { text: responseia,date: new Date(),admin: true }
-
-// 			const clientId = msg.from.split('@')[0]; // Solo el número de teléfono
-
-// 			let existingClient = await clients.findOne({ clientId });
-
-// 			if (existingClient) {
-// 				let payload = { userMessage,adminResponse,clientId: existingClient.id,webUrl: web.url,newClient: null }
-
-// 				const chat = await chats.findOneAndUpdate({ clientId: existingClient.id,webId: web.id },{
-// 					$set: { lastMessage: adminResponse },
-// 					$push: {
-// 						messages: { $each: [userMessage,adminResponse] }
-// 					}
-
-// 				},{ new: true })
-
-// 				if (!chat) {
-// 					const newChat = await chats.create({ messages: [userMessage,adminResponse],lastMessage: adminResponse,platform: "whatsapp",web: web.url,webId: web.id,clientId: existingClient.id,uuidv4Id: existingClient.clientId,clientName })
-// 					existingClient.chats.push(newChat.id)
-// 					web.chats.push(newChat.id)
-// 					user.clientes += 1
-// 					web.clientes.push(existingClient.id)
-
-// 					payload.newClient = newChat
-
-// 					await newChat.save()
-// 					await existingClient.save()
-// 					await web.save()
-// 				}
-
-// 				io.emit("userMensajeWhatsapp",payload);
-// 			}
-// 			else {
-// 				const newClient = await clients.create({ clientId,name: clientName,phone: clientId })
-// 				const newChat = await chats.create({ messages: [userMessage],platform: "whatsapp",web: web.url,webId: web.id,clientId: newClient.id,uuidv4Id: newClient.clientId,clientName })
-
-// 				newClient.chats.push(newChat.id)
-// 				web.chats.push(newChat.id)
-
-// 				newChat.messages.push(adminResponse)
-// 				newChat.lastMessage = adminResponse
-
-// 				user.clientes += 1
-// 				web.clientes.push(newClient.id)
-
-// 				await newChat.save()
-// 				await newClient.save()
-// 				await web.save()
-
-// 				let payload = { userMessage,adminResponse,newClient: newChat,clientId: newClient.id,webUrl: web.url }
-
-// 				io.emit("userMensajeWhatsapp",payload);
-// 			}
-// 			msg.reply(responseia)
-
-// 		} catch (error) {
-// 			console.log(error);
-
-// 		}
-
-// 	});
-
-
-
-
-// 	this.AllClients[webId].on('ready',async () => {
-// 		console.log('WhatsApp bot successfully connected!');
-// 		this.AllClients[webId].sendPresenceAvailable();
-
-// 	});
-
-// 	this.AllClients[webId].on('remote_session_saved',() => {
-// 		console.log('Remote Session saved')
-// 	})
-
-// }
-
-
