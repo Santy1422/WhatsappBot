@@ -68,9 +68,10 @@ class UserWppHandler {
 		let message: Message
 		console.log(message)
 		try {
-			// if (this.messageQueue.length > 0) {
-			// 	this.isSendingMessage = true;
+			if (this.messageQueue.length > 0) {
+				this.isSendingMessage = true;
 				console.log("reciboMensaje");
+				//Quitar de la queue
 				message = this.messageQueue.shift();
 				let mensaje = message.body.toLowerCase();
 			
@@ -540,7 +541,12 @@ class UserWppHandler {
 					let peticion =	 await peticionAI(prompt)
 							this.UserWppData.sendMessage(message.from,peticion);
 						  }
-		
+						  await this.ProcessMessageQueue();
+
+						}else {
+							// No hay más mensajes en la cola
+							this.isSendingMessage = false;
+						}
 		} catch (error) {
 			// Aquí, puedes manejar el error.
 			console.log("Se produjo un error al responder:",error);
