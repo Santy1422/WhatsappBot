@@ -136,7 +136,7 @@ class UserWppHandler {
 					"Acargajé",
 					"Empanadas chilenas",
 					"Curanto",],
-					objetivos: ['objetivos', 'meta', 'metas', 'objetivo', 'propósito', 'aspiración', 'metita', 'propósitos', "quiero", "propósitos", "anhelos", "ambiciones", "deseos", "metas personales", "ser"],
+					objetivos: ['objetivos', 'meta', 'metas', 'objetivo', 'propósito', 'aspiración', 'metita', 'propósitos', "quiero", "propósitos", "anhelos", "ambiciones", "engordar", "adelgazar", "ser musculoso", "deseos", "metas personales", "ser"],
 					edad: ["tengo", "mi edad es", "años", "edad"]
 				  };
 		
