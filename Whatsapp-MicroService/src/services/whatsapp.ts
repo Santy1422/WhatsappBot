@@ -67,8 +67,8 @@ class UserWppHandler {
 		let message: Message
 		console.log(message)
 		try {
-			if (this.messageQueue.length > 0) {
-				this.isSendingMessage = true;
+			// if (this.messageQueue.length > 0) {
+			// 	this.isSendingMessage = true;
 				console.log("reciboMensaje");
 				message = this.messageQueue.shift();
 				let mensaje = message.body.toLowerCase();
@@ -78,7 +78,64 @@ class UserWppHandler {
 					nombre: ["nombre", "nombres", "apellido", "soy", "me llamo", "mi apodo es", "apelativo", "denominación", "cognombre", "identificación"],
 					genero: ['genero', 'género', 'sexo', 'sex', 'sexo', "hombre", "mujer", "identidad de género", "orientación sexual", "masculino", "femenino", "no binario"],
 					alergia: ['alergia', 'alérgico', 'alérgica', 'alérgias', 'alergias', 'alergico', 'alérgic@', "no me gusta", "me cae mal", "me hace mal", "hipersensibilidad", "intolerancia", "aversión", "reacción alérgica"],
-					comida: ['comida', 'plato', 'platillo', 'alimento', 'alimentación', 'comidita', "me gusta", "siempre como", "manjar", "sustento", "vianda", "nutritivo", "alimenticio"],
+					comida: ['comida', 'plato', 'platillo', 'alimento', 'alimentación', 'comidita', "me gusta", "siempre como", "manjar", "sustento", "vianda", "nutritivo", "alimenticio",   "Asado",
+					"Empanadas argentinas",
+					"Choripán",
+					"Milanesa a la napolitana",
+					"Dulce de leche",
+					"Salteñas",
+					"Pique macho",
+					"Silpancho",
+					"Anticuchos",
+					"Ceviche peruano",
+					"Lomo saltado",
+					"Ají de gallina",
+					"Tacos al pastor",
+					"Chiles en nogada",
+					"Pozole",
+					"Feijoada",
+					"Moqueca",
+					"Pão de queijo",
+					"Arepas",
+					"Pabellón criollo","Hallacas venezolanas",
+					"Carne en vara",
+					"Tequeños",
+					"Chupe de camarones",
+					"Tamales",
+					"Mondongo",
+					"Sancocho",
+					"Lechona",
+					"Bandeja paisa",
+					"Ajiaco",
+					"Cazuela de mariscos",
+					"Encebollado",
+					"Seco de pollo",
+					"Cuy asado",
+					"Locro",
+					"Sopa paraguaya",
+					"Chipa guasu",
+					"Pira caldo",
+					"Sopa de maní",
+					"Pastel de choclo","Ropa vieja",
+					"Arroz con pollo",
+					"Gallo pinto",
+					"Casado",
+					"Plátanos fritos",
+					"Picadillo",
+					"Chimichurri",
+					"Matambre",
+					"Vitel toné",
+					"Barbacoa",
+					"Cochinita pibil",
+					"Mole poblano",
+					"Enchiladas",
+					"Tostadas",
+					"Churrasco",
+					"Feijão tropeiro",
+					"Bobó de camarão",
+					"Acargajé",
+					"Empanadas chilenas",
+					"Curanto",],
 					objetivos: ['objetivos', 'meta', 'metas', 'objetivo', 'propósito', 'aspiración', 'metita', 'propósitos', "quiero", "propósitos", "anhelos", "ambiciones", "deseos", "metas personales", "ser"],
 					edad: ["tengo", "mi edad es", "años", "edad"]
 				  };
@@ -165,11 +222,11 @@ class UserWppHandler {
 				console.log("mensaje enviado");
 				this.isSendingMessage = false;
 
-				await this.ProcessMessageQueue();
-			}
-			} else {
-				// No hay más mensajes en la cola
-				this.isSendingMessage = false;
+			// 	await this.ProcessMessageQueue();
+			// }
+			// } else {
+			// 	// No hay más mensajes en la cola
+			// 	this.isSendingMessage = false;
 			}
 		} catch (error) {
 			// Aquí, puedes manejar el error.
