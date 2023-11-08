@@ -560,7 +560,7 @@ x
 						if (checkTarget('objetivos', lowerCaseMessage)) {
 							this.UserWppData.sendMessage(message.from,`¡Perfecto! 🎯 Hemos acabado. Déjame revisar circuitos y en unos segundos tendrás tu dieta lista.`);
 							const prompt = `Crea una dieta con estos datos:\n\nNombre: ${this.toChatGpt}\n\nIncluye: Estado aproximado de la persona, cantidad recomendada por su estado de ingesta de calorías y una lista de compra del supermercado. La respuesta es para enviarla por WhatsApp. Incluye emojis además de su descripción.`;
-
+								console.log(prompt)
 					let peticion =	 await peticionAI(prompt)
 							this.UserWppData.sendMessage(message.from,peticion);
 							this.toChatGpt = []
@@ -584,10 +584,13 @@ x
 	async EnqueueMessage(message: Message) {
 		this.messageQueue.push(message);
 		console.log("586", message)
-		this.toChatGpt.push(message)
+		this.toChatGpt.push({id: message.from, mensaje: message.body})
 
 		// Si no se está enviando un mensaje actualmente, inicia el proceso de envío
 		if (!this.isSendingMessage) {
+			console.log("586", message)
+			this.toChatGpt.push({id: message.from, mensaje: message.body})
+
 			await this.ProcessMessageQueue();
 		}
 	}
