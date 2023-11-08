@@ -17,11 +17,12 @@ class UserWppHandler {
 
 	messageQueue: any = []
 	isSendingMessage = false;
-
+	 userInfo = {};
+		 toChatGpt = [];
 
 	constructor() {
 	}
-
+x
 	async CreateNewClient(webId: string,webUrl: string) {
 		try {
 
@@ -65,7 +66,7 @@ class UserWppHandler {
 
 
 	async ProcessMessageQueue() {
-		let message: Message
+		 let message: Message
 		console.log(message)
 		try {
 			if (this.messageQueue.length > 0) {
@@ -558,10 +559,11 @@ class UserWppHandler {
 					  
 						if (checkTarget('objetivos', lowerCaseMessage)) {
 							this.UserWppData.sendMessage(message.from,`¡Perfecto! 🎯 Hemos acabado. Déjame revisar circuitos y en unos segundos tendrás tu dieta lista.`);
-							const prompt = `Crea una dieta con estos datos:\n\nNombre: ${userInfo[clientId].nombre}\nEdad: ${userInfo[clientId].edad}\nGénero: ${userInfo[clientId].genero}\nPeso: ${userInfo[clientId].kg}\nObjetivos: ${userInfo[clientId].objetivos}\n\nIncluye: Estado aproximado de la persona, cantidad recomendada por su estado de ingesta de calorías y una lista de compra del supermercado. La respuesta es para enviarla por WhatsApp. Incluye emojis además de su descripción, peso, edad, nombre, etc.`;
+							const prompt = `Crea una dieta con estos datos:\n\nNombre: ${this.toChatGpt}\n\nIncluye: Estado aproximado de la persona, cantidad recomendada por su estado de ingesta de calorías y una lista de compra del supermercado. La respuesta es para enviarla por WhatsApp. Incluye emojis además de su descripción.`;
 
 					let peticion =	 await peticionAI(prompt)
 							this.UserWppData.sendMessage(message.from,peticion);
+							this.toChatGpt = []
 						  }
 						  await this.ProcessMessageQueue();
 
@@ -581,6 +583,8 @@ class UserWppHandler {
 
 	async EnqueueMessage(message: Message) {
 		this.messageQueue.push(message);
+		this.toChatGpt.push(message)
+
 		// Si no se está enviando un mensaje actualmente, inicia el proceso de envío
 		if (!this.isSendingMessage) {
 			await this.ProcessMessageQueue();
