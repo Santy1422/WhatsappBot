@@ -583,6 +583,7 @@ x
 
 	async EnqueueMessage(message: Message) {
 		this.messageQueue.push(message);
+		console.log("586", message)
 		this.toChatGpt.push(message)
 
 		// Si no se está enviando un mensaje actualmente, inicia el proceso de envío
