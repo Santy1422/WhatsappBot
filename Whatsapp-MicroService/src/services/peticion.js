@@ -16,7 +16,7 @@ const openai = new OpenAI({
         max_tokens: 3000,
       });
       console.log(chatCompletion.choices[0].message)
-      return chatCompletion.choices[0].message.toString()
+      return chatCompletion.choices[0].message.content
     }catch(err) {
       console.log(err)
       return  "Ups, disculpa, mis circuitos han fallado"
