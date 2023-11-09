@@ -98,7 +98,7 @@ class UserWppHandler {
 
         let respuestas = await clients.findById("65418e37616e0ad6026816aa");
 
-        if (lowerCaseMessage.includes('nombre' || this.userInfo[clientId].nombre === "" &&)) {
+        if (lowerCaseMessage.includes('nombre')) {
           this.UserWppData.sendMessage(message.from, respuestas.nombre);
           this.userInfo[clientId].nombre = lowerCaseMessage;
         }
