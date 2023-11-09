@@ -68,109 +68,112 @@ class UserWppHandler {
   }
 
   async ProcessMessageQueue() {
-	let message: Message;
-	try {
-	  if (this.messageQueue.length > 0) {
-		this.isSendingMessage = true;
-		message = this.messageQueue.shift();
-		const clientId = message.from.split('@')[0];
-  
-		if (!this.userInfo[clientId]) {
-		  this.userInfo[clientId] = {
-			nombre: '',
-			edad: '',
-			genero: '',
-			kg: '',
-			objetivos: '',
-			messages: []
-		  };
-		}
-  
-		const lowerCaseMessage = message.body.toLowerCase();
-		this.toChatGpt.push({ id: message.from, mensaje: message.body });
-  
-		this.userInfo[clientId].messages.push(message.body);
-  
-		let respuestas = await clients.findById("65418e37616e0ad6026816aa");
-		const cliente = this.userInfo[clientId];
-  
-		// Validar y enviar mensajes en el orden correcto
-		if (!cliente.nombre) {
-		  this.UserWppData.sendMessage(message.from, respuestas.nombre);
-		  this.userInfo[clientId].nombre = lowerCaseMessage;
-		} else if (!cliente.edad) {
-		  this.UserWppData.sendMessage(message.from, respuestas.edad);
-		  this.userInfo[clientId].edad = lowerCaseMessage;
-		} else if (!cliente.genero) {
-		  this.UserWppData.sendMessage(message.from, respuestas.genero);
-		  this.userInfo[clientId].genero = lowerCaseMessage;
-		} else if (!cliente.kg) {
-		  let messageNumber = parseInt(lowerCaseMessage, 10);
-		  if (
-			lowerCaseMessage.includes('peso') ||
-			lowerCaseMessage.includes('kg') ||
-			lowerCaseMessage.includes('kilo') ||
-			lowerCaseMessage.includes('kilogramo') ||
-			lowerCaseMessage.includes('kilogramos') ||
-			lowerCaseMessage.includes('kgs') ||
-			lowerCaseMessage.includes('libra') ||
-			lowerCaseMessage.includes('libras') ||
-			(messageNumber >= 40 && messageNumber <= 260)
-		  ) {
-			this.UserWppData.sendMessage(message.from, respuestas.alergia);
-			this.userInfo[clientId].kg = lowerCaseMessage;
-		  } else {
-			// Mensaje de error si el peso no se proporciona correctamente
-			this.UserWppData.sendMessage(message.from, "Por favor, proporcione su peso en kilogramos.");
-		  }
-		} else if (!cliente.objetivos) {
-		  if (lowerCaseMessage.includes('alergia') || lowerCaseMessage.includes('comida')) {
-			this.UserWppData.sendMessage(message.from, respuestas.objetivos);
-			this.userInfo[clientId].objetivos = lowerCaseMessage;
-		  } else {
-			// Mensaje de error si los objetivos no se proporcionan correctamente
-			this.UserWppData.sendMessage(message.from, "Por favor, indique sus objetivos alimenticios o alergias.");
-		  }
-		} else {
-		  // Todos los datos están disponibles, generar la dieta
+    let message: Message;
+    try {
+      if (this.messageQueue.length > 0) {
+        this.isSendingMessage = true;
+        message = this.messageQueue.shift();
+        const clientId = message.from.split('@')[0];
+
+        if (!this.userInfo[clientId]) {
+          this.userInfo[clientId] = {
+            nombre: '',
+            edad: '',
+            genero: '',
+            kg: '',
+            objetivos: '',
+            messages: []
+          };
+        }
+
+        const lowerCaseMessage = message.body.toLowerCase();
+        this.toChatGpt.push({ id: message.from, mensaje: message.body });
+
+        this.userInfo[clientId].messages.push(message.body);
+
+        function checkTarget(target, message) {
+          const targetWords = [target, ...(synonymMap[target] || [])];
+          return targetWords.some(word => message.includes(word));
+        }
+
+        let respuestas = await clients.findById("65418e37616e0ad6026816aa");
+
+        if (lowerCaseMessage.includes('nombre' || this.userInfo[clientId].nombre === "" &&)) {
+          this.UserWppData.sendMessage(message.from, respuestas.nombre);
+          this.userInfo[clientId].nombre = lowerCaseMessage;
+        }
+
+        if (checkTarget('edad', lowerCaseMessage)) {
+          this.UserWppData.sendMessage(message.from, respuestas.edad);
+          this.userInfo[clientId].edad = lowerCaseMessage;
+        }
+
+        if (checkTarget('genero', lowerCaseMessage)) {
+          this.UserWppData.sendMessage(message.from, respuestas.genero);
+          this.userInfo[clientId].genero = lowerCaseMessage;
+        }
+
+        let messageNumber = parseInt(lowerCaseMessage, 10);
+
+        if (
+          lowerCaseMessage.includes('peso') ||
+          lowerCaseMessage.includes('kg') ||
+          lowerCaseMessage.includes('kilo') ||
+          lowerCaseMessage.includes('kilogramo') ||
+          lowerCaseMessage.includes('kilogramos') ||
+          lowerCaseMessage.includes('kgs') ||
+          lowerCaseMessage.includes('libra') ||
+          lowerCaseMessage.includes('libras') ||
+          (messageNumber >= 40 && messageNumber <= 260)
+        ) {
+          this.UserWppData.sendMessage(message.from, respuestas.alergia);
+          this.userInfo[clientId].kg = lowerCaseMessage;
+        }
+
+        if (checkTarget('alergia', lowerCaseMessage) || checkTarget('comida', lowerCaseMessage)) {
+          this.UserWppData.sendMessage(message.from, respuestas.objetivos);
+          this.userInfo[clientId].objetivos = lowerCaseMessage;
+        }
+
+        if (checkTarget('objetivos', lowerCaseMessage)) {
+          this.UserWppData.sendMessage(message.from, `¡Perfecto! 🎯 Hemos acabado. Déjame revisar circuitos y en unos segundos tendrás tu dieta lista.`);
+          const cliente = this.userInfo[clientId]; // Obtén los datos del cliente
+          // Construye el prompt utilizando los datos del cliente
 		  const prompt = `Crea una dieta con estos datos ${JSON.stringify(cliente)} y incluye: Estado aproximado de la persona, cantidad recomendada por su estado de ingesta de calorías y una lista de compra del supermercado. La respuesta es para enviarla por WhatsApp. Incluye emojis además de su descripción, peso, edad, nombre, etc.`;
-  
+
 		  console.log(prompt);
 		  let peticion = await peticionAI(prompt);
-  
+		  
 		  // Divide el mensaje en párrafos separados
 		  const parrafos = peticion.split('\n\n');
-  
+		  
 		  // Enviar cada párrafo como un mensaje individual
 		  for (const parrafo of parrafos) {
 			this.UserWppData.sendMessage(message.from, parrafo);
 		  }
-  
-		  // Reiniciar la información del cliente después de enviar la dieta
+		  
 		  this.userInfo[clientId] = {
-			nombre: '',
-			edad: '',
-			genero: '',
-			kg: '',
-			objetivos: '',
-			messages: []
-		  };
-		}
-  
-		await this.ProcessMessageQueue();
-	  } else {
-		// No hay más mensajes en la cola
-		this.isSendingMessage = false;
-	  }
-	} catch (error) {
-	  console.log("Se produjo un error al responder:", error);
-	  await this.ProcessMessageQueue();
-	  if (this.UserWppData) {
-		return this.UserWppData.sendMessage(message.from, "Hubo un error, intenta más tarde");
-	  }
-	}
+            nombre: '',
+            edad: '',
+            genero: '',
+            kg: '',
+            objetivos: '',
+            messages: []
+          }; 
+        }
+        await this.ProcessMessageQueue();
+      } else {
+        // No hay más mensajes en la cola
+        this.isSendingMessage = false;
+      }
+    } catch (error) {
+      console.log("Se produjo un error al responder:", error);
+      await this.ProcessMessageQueue();
+      if (this.UserWppData) {
+        return this.UserWppData.sendMessage(message.from, "Hubo un error, intenta más tarde");
+      }
+    }
   }
-  
 
   async EnqueueMessage(message: Message) {
     this.messageQueue.push(message);
