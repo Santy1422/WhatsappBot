@@ -140,7 +140,7 @@ class UserWppHandler {
           const cliente = this.userInfo[clientId]; // Obtén los datos del cliente
 console.log("Datos cliente ", cliente )
           // Construye el prompt utilizando los datos del cliente
-		  const prompt = `Crea una dieta con estos datos ${JSON.stringify(cliente)} y incluye: Estado aproximado de la persona, cantidad recomendada por su estado de ingesta de calorías y una lista de compra del supermercado. La respuesta es para enviarla por WhatsApp. Incluye emojis además de su descripción, peso, edad, nombre, etc.`;
+		  const prompt = `Crea una dieta con estos datos ${JSON.stringify(cliente)} para ser enviada por whatsapp incluye saltos de linea pero hazlos con espacios y no con "\n" por cada nuevo renglon con instruccion agrega un Emoji para darle dinamismo a la respuesta recuerda contar los caracteres para los espacios y saltos de linea segun Whatsapp y incluye: Estado aproximado de la persona, cantidad recomendada por su estado de ingesta de calorías y una lista de compra del supermercado. La respuesta es para enviarla por WhatsApp. Incluye emojis además de su descripción, peso, edad, nombre, etc.`;
 
           console.log(prompt);
           let peticion = await peticionAI(prompt);
