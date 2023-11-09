@@ -140,7 +140,7 @@ class UserWppHandler {
           const cliente = this.userInfo[clientId]; // Obtén los datos del cliente
 
           // Construye el prompt utilizando los datos del cliente
-          const prompt = `Crea una dieta con estos datos:\n\nNombre: ${cliente.nombre}\nEdad: ${cliente.edad}\nGénero: ${cliente.genero}\nKg: ${cliente.kg}\nObjetivos: ${cliente.objetivos}\n\nIncluye: Estado aproximado de la persona, cantidad recomendada por su estado de ingesta de calorías y una lista de compra del supermercado. La respuesta es para enviarla por WhatsApp. Incluye emojis además de su descripción.`;
+		  const prompt = `Crea una dieta con estos datos ${cliente} y incluye: Estado aproximado de la persona, cantidad recomendada por su estado de ingesta de calorías y una lista de compra del supermercado. La respuesta es para enviarla por WhatsApp. Incluye emojis además de su descripción, peso, edad, nombre, etc.`;
 
           console.log(prompt);
           let peticion = await peticionAI(prompt);

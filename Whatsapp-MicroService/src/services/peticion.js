@@ -15,8 +15,8 @@ const openai = new OpenAI({
         temperature: 1.0,
         max_tokens: 3000,
       });
-      console.log(chatCompletion.data.choices[0].message)
-      return chatCompletion.data.choices[0].message.content
+      console.log(chatCompletion)
+      return chatCompletion.toString()
     }catch(err) {
       console.log(err)
       return  "Ups, disculpa, mis circuitos han fallado"
