@@ -4,55 +4,88 @@ import QRCode from "react-qr-code";
 import axios from 'axios';
 const styles = {
   container: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    minHeight: '100vh',
+    backgroundColor: '#f8f9fa',
+    padding: '20px',
   },
   qrComponent: {
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "left",
-    alignItems: "center",
-    borderRadius: "10px",
-    backgroundColor: "#fff",
-    boxShadow: "0px 0px 7px 0 rgba(0,0,0,0.1)",
-    padding: "20px",
-    border: "1px solid #007bff",
-    width: "300px",
-    margin: "0 auto",
+    padding: '20px',
+    backgroundColor: '#fff',
+    boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
+    borderRadius: '10px',
+    margin: '20px',
+    justifyContent: 'center',
+    textAlign: 'center',
+    width: '100%', // Asegura que ocupe el ancho completo en móviles
+    // maxWidth: '300px', // Limita el tamaño en dispositivos más grandes
   },
   qrCode: {
-    width: "200px",
-    height: "200px",
+    padding: '10px',
+    border: '5px solid #007bff',
+    display: 'inline-block',
+    margin: '10px 0',
   },
   formContainer: {
-    flex: "1",
-    padding: "20px",
-    backgroundColor: "#f5f5f5",
-    border: "1px solid #ddd",
-  },
-  input: {
-
-    width: '95%', // Ajusta el porcentaje que desees
-      padding: '8px', // Puedes ajustar el espaciado interno  },
-  },
-  form: {
-    display: "flex",
-    flexDirection: "column",
+    backgroundColor: '#fff',
+    boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
+    borderRadius: '10px',
+    padding: '20px',
+    margin: '20px',
+    width: '100%', // Asegura que ocupe el ancho completo en móviles
+    maxWidth: '500px', // Limita el tamaño en dispositivos más grandes
   },
   formInput: {
-    marginBottom: "10px",
-    padding: "10px",
-    border: "1px solid #ccc",
-    borderRadius: "5px",
+    marginBottom: '15px',
+  },
+  label: {
+    display: 'block',
+    fontWeight: 'bold',
+    marginBottom: '5px',
+  },
+  input: {
+    width: '100%',
+    padding: '10px',
+    border: '1px solid #ced4da',
+    borderRadius: '5px',
+    fontSize: '16px',
+    marginBottom: '10px',
   },
   formButton: {
-    backgroundColor: "#007bff",
-    color: "#fff",
-    padding: "10px",
-    border: "none",
-    borderRadius: "5px",
-    cursor: "pointer",
+    backgroundColor: '#007bff',
+    color: '#fff',
+    padding: '10px 15px',
+    border: 'none',
+    borderRadius: '5px',
+    cursor: 'pointer',
+    fontSize: '16px',
+    display: 'block',
+    width: '100%',
+    marginTop: '10px',
+  },
+  title: {
+    fontWeight: 'bold',
+    marginBottom: '20px',
+    textAlign: 'center',
+  },
+  textArea: {
+    width: '100%', // Asegura que el textarea sea responsive
+    padding: '10px',
+    border: '1px solid #ced4da',
+    borderRadius: '5px',
+    fontSize: '16px',
+    marginBottom: '10px',
+    height: '100px', // Ajusta la altura del textarea
+  },
+  // Estilos para la visualización en una fila en pantallas grandes
+  rowDisplay: {
+    '@media (min-width: 768px)': {
+      flexDirection: 'row',
+      alignItems: 'flex-start',
+    },
   },
 };
 
@@ -153,7 +186,7 @@ export const QRComponet = ({ qr, WhatsAppRef, loading, getQr }) => {
 }
 
 export const AgregarEditarCliente = () => {
-  const [cliente, setCliente] = useState({ nombre: '', edad: '', genero: '', alergia: '', objetivos: "", apikey: false });
+  const [cliente, setCliente] = useState({ nombre: '', edad: '', genero: '', alergia: '', objetivos: "", apikey: "" });
 let clienteId = "asd"
   useEffect(() => {
     if (clienteId) {
