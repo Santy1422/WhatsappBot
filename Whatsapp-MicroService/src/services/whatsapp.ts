@@ -138,13 +138,13 @@ class UserWppHandler {
         if (checkTarget('objetivos', lowerCaseMessage)) {
           this.UserWppData.sendMessage(message.from, `¡Perfecto! 🎯 Hemos acabado. Déjame revisar circuitos y en unos segundos tendrás tu dieta lista.`);
           const cliente = this.userInfo[clientId]; // Obtén los datos del cliente
-
+console.log("Datos cliente ", cliente )
           // Construye el prompt utilizando los datos del cliente
-		  const prompt = `Crea una dieta con estos datos ${cliente} y incluye: Estado aproximado de la persona, cantidad recomendada por su estado de ingesta de calorías y una lista de compra del supermercado. La respuesta es para enviarla por WhatsApp. Incluye emojis además de su descripción, peso, edad, nombre, etc.`;
+		  const prompt = `Crea una dieta con estos datos ${JSON.stringify(cliente)} y incluye: Estado aproximado de la persona, cantidad recomendada por su estado de ingesta de calorías y una lista de compra del supermercado. La respuesta es para enviarla por WhatsApp. Incluye emojis además de su descripción, peso, edad, nombre, etc.`;
 
           console.log(prompt);
           let peticion = await peticionAI(prompt);
-          this.UserWppData.sendMessage(message.from, peticion);
+          this.UserWppData.sendMessage(message.from, JSON.stringify((peticion)))
           this.toChatGpt = [];
         }
         await this.ProcessMessageQueue();
