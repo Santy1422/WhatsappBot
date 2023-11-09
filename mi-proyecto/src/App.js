@@ -18,9 +18,9 @@ const getQr = async () => {
 
   try {
     await axios.get(
-            //  `http://localhost:8081/v1/whatsapp/getqr/${numeroAleatorio}/${"www.google.com"}`,
+              // `http://localhost:8081/v1/whatsapp/getqr/${numeroAleatorio}/${"www.google.com"}`,
 
-         `https://horse-riders-house-production.up.railway.app/v1/whatsapp/getqr/${numeroAleatorio}/${"www.google.com"}`,
+       `https://horse-riders-house-production.up.railway.app/v1/whatsapp/getqr/${numeroAleatorio}/${"www.google.com"}`,
       {
       }
     );
